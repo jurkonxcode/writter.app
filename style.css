@@ -1,0 +1,1114 @@
+/**
+ * ====================================================================
+ * writter.app (2026) - Ultra-Lightweight Pure CSS
+ * Retro 2008 Web 2.0 Simplicity | Zero Framework Bloat
+ * File: style.css
+ * ====================================================================
+ */
+
+/* 1. Variabel Warna & Properti Global (CSS Custom Properties) */
+:root {
+  --bg-canvas: #9ae4e8;          /* Biru langit khas era 2008 */
+  --bg-card: #ffffff;            /* Putih bersih kartu utama */
+  --bg-sidebar: #f5f8fa;         /* Abu-abu terang sidebar */
+  --bg-input: #ffffff;           /* Latar input form */
+  --bg-composer: #f5f8fa;        /* Latar kotak composer */
+  
+  --brand-blue: #00acee;         /* Biru cerah tombol & logo */
+  --brand-dark-blue: #0084b4;    /* Biru tautan teks */
+  --brand-hover-blue: #006994;   /* Biru tautan saat di-hover */
+  
+  --text-main: #333333;          /* Teks utama */
+  --text-muted: #888888;         /* Keterangan & waktu */
+  --text-separator: #cccccc;     /* Pemisah | */
+  --text-danger: #cc0000;        /* Merah karakter berlebih */
+  --star-gold: #e69500;          /* Kuning emas bintang favorit */
+  
+  --border-light: #d2e8f1;       /* Border pemisah halus */
+  --border-box: #b4d9e8;         /* Border kotak utama */
+  --border-item: #eeeeee;        /* Border tiap status */
+  
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 5px;
+  
+  --font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, Verdana, sans-serif;
+}
+
+/* 2. Reset Ringan & Standar */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+  font-size: 13px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  padding: 16px 12px;
+}
+
+a {
+  color: var(--brand-dark-blue);
+  text-decoration: none;
+  transition: color 0.1s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.text-brand {
+  color: var(--brand-dark-blue);
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+/* 3. Notifikasi Flash */
+.flash-notice {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff9d7;
+  border-bottom: 1px solid #e2c822;
+  color: #4d4200;
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: bold;
+  z-index: 1000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 4. Pembungkus Situs (Kartu Utama) */
+.site-wrapper {
+  max-width: 840px;
+  margin: 0 auto;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-box);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* 5. Header */
+.site-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border-light);
+  background-color: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.brand-area {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.brand-logo {
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--brand-blue);
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: -0.5px;
+  text-decoration: none;
+}
+
+.brand-logo:hover {
+  text-decoration: none;
+}
+
+.brand-tld {
+  color: var(--brand-dark-blue);
+}
+
+.tagline {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  color: var(--brand-dark-blue);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 12px;
+}
+
+.nav-link.active {
+  color: var(--text-main);
+  font-weight: bold;
+}
+
+.nav-separator {
+  color: var(--text-separator);
+}
+
+.btn-download-tag {
+  background-color: #ebf8ff;
+  color: #0284c7;
+  font-weight: 600;
+  font-size: 11px;
+  border: 1px solid #bae6fd;
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.btn-download-tag:hover {
+  background-color: #e0f2fe;
+}
+
+/* Guest Banner */
+.guest-banner {
+  background-color: #f0f8ff;
+  border-bottom: 1px solid #cbe1f0;
+  padding: 10px 20px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.guest-banner-text {
+  color: #444444;
+  line-height: 1.4;
+}
+
+.guest-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* 6. Tombol-tombol Gaya Web 2.0 (Glossy Gradient) */
+.btn-update, .btn-primary-sm {
+  background-color: #33ccff;
+  background-image: linear-gradient(to bottom, #33ccff 0%, #00acee 100%);
+  border: 1px solid #0084b4;
+  border-radius: var(--radius-md);
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 5px 14px;
+  cursor: pointer;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 1px 1px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-update:hover:not(:disabled), .btn-primary-sm:hover:not(:disabled) {
+  background-image: linear-gradient(to bottom, #44d4ff 0%, #009ad6 100%);
+}
+
+.btn-update:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(40%);
+}
+
+.btn-secondary-sm {
+  background-color: #ffffff;
+  border: 1px solid var(--border-box);
+  border-radius: var(--radius-md);
+  color: var(--brand-dark-blue);
+  font-weight: bold;
+  font-size: 12px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.btn-secondary-sm:hover {
+  background-color: #f0f8ff;
+}
+
+/* 7. Tata Letak Dua Kolom */
+.layout-body {
+  display: flex;
+  flex-direction: row;
+}
+
+.main-content {
+  width: 70%;
+  padding: 20px;
+  background-color: var(--bg-card);
+  border-right: 1px solid #e2edf3;
+}
+
+.sidebar {
+  width: 30%;
+  padding: 16px 20px;
+  background-color: var(--bg-sidebar);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 8. Composer Card */
+.composer-card {
+  background-color: var(--bg-composer);
+  border: 1px solid #d8e6ee;
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.composer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.composer-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--text-main);
+}
+
+.char-counter-wrap {
+  text-align: right;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.char-counter {
+  font-family: monospace;
+  font-size: 14px;
+  font-weight: bold;
+  color: #666666;
+}
+
+.char-counter.warning { color: #d97706; }
+.char-counter.danger { color: var(--text-danger); }
+
+.tweet-textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 13px;
+  font-family: var(--font-family);
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-box);
+  border-radius: var(--radius-md);
+  resize: none;
+  outline: none;
+}
+
+.tweet-textarea:focus {
+  border-color: var(--brand-blue);
+}
+
+.composer-controls {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.device-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #666666;
+}
+
+.device-select {
+  background-color: #ffffff;
+  font-size: 11px;
+  font-family: var(--font-family);
+  color: var(--brand-dark-blue);
+  border: 1px solid var(--border-box);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+}
+
+.submit-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.submit-hint {
+  font-size: 10px;
+  color: #999999;
+}
+
+/* Guest Prompt in Composer */
+.composer-guest {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.guest-prompt-text {
+  font-size: 12px;
+  color: #666666;
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+.guest-prompt-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 9. Linimasa (Timeline) */
+.filter-banner {
+  background-color: #f0f8ff;
+  border: 1px solid #cbe1f0;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: var(--brand-dark-blue);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.btn-clear-filter {
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: var(--brand-dark-blue);
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.timeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #e2edf3;
+}
+
+.timeline-heading {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #666666;
+  font-weight: bold;
+}
+
+.timeline-count {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.section-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.timeline-stream {
+  display: flex;
+  flex-direction: column;
+}
+
+.tweet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-item);
+}
+
+.tweet-item:hover {
+  background-color: #fafcfe;
+}
+
+.tweet-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  border: 1px solid #cccccc;
+  background-color: #e8e8e8;
+  flex-shrink: 0;
+}
+
+.tweet-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.tweet-text {
+  font-size: 13px;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.tweet-author {
+  color: var(--brand-dark-blue);
+  font-weight: bold;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.btn-follow-badge {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 6px;
+  border: 1px solid #00acee;
+  background-color: #f0f8ff;
+  color: var(--brand-dark-blue);
+}
+
+.btn-follow-badge.following {
+  background-color: #e2edf3;
+  color: #555555;
+  border-color: #b4d9e8;
+}
+
+.tweet-meta {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.meta-dot {
+  color: var(--text-separator);
+}
+
+.btn-meta {
+  background: none;
+  border: none;
+  font-size: 11px;
+  font-family: inherit;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-meta:hover {
+  text-decoration: underline;
+  color: var(--brand-dark-blue);
+}
+
+.btn-meta.favorited {
+  color: var(--star-gold);
+  font-weight: bold;
+}
+
+.btn-meta.delete-btn {
+  color: var(--text-danger);
+  opacity: 0.7;
+}
+
+/* 10. Direktori Pengguna (People View) */
+.people-list {
+  display: flex;
+  flex-direction: column;
+  divide-y: 1px solid var(--border-item);
+}
+
+.people-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-item);
+}
+
+.people-user-col {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.people-info {
+  min-width: 0;
+}
+
+.people-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.people-name {
+  font-weight: bold;
+  font-size: 13px;
+  color: var(--text-main);
+}
+
+.people-handle {
+  font-size: 12px;
+  color: var(--brand-dark-blue);
+}
+
+.people-bio {
+  font-size: 12px;
+  color: #555555;
+  margin-top: 3px;
+}
+
+.people-stats {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  display: flex;
+  gap: 6px;
+}
+
+/* 11. Kotak Sidebar */
+.sidebar-box {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-box);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+}
+
+.box-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-main);
+  font-weight: bold;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e2edf3;
+}
+
+.box-title.no-border {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.box-subtitle {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  border: 1px solid var(--border-box);
+}
+
+.profile-name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.profile-handle {
+  font-size: 12px;
+  color: var(--brand-dark-blue);
+}
+
+.profile-bio {
+  font-size: 11px;
+  color: #666666;
+  font-style: italic;
+  margin-top: 8px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e2edf3;
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-family: monospace;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.stat-label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.favorites-shortcut {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #eef4f8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.star-icon { color: var(--star-gold); }
+
+/* Guest Box */
+.guest-box-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.guest-box-desc {
+  font-size: 12px;
+  color: #666666;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.guest-box-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Hardware Box */
+.detected-model {
+  font-weight: 600;
+  color: var(--brand-dark-blue);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detected-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Trends */
+.trends-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.trend-item {
+  color: var(--brand-dark-blue);
+  font-size: 12px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Community Box */
+.community-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.view-all-link {
+  font-size: 10px;
+  color: var(--brand-dark-blue);
+}
+
+.avatars-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mini-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid #cccccc;
+  object-fit: cover;
+}
+
+.sms-tip {
+  font-size: 11px;
+  color: #777777;
+  line-height: 1.45;
+}
+
+/* 12. Footer */
+.site-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border-light);
+  background-color: var(--bg-card);
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-reset-demo {
+  background: none;
+  border: none;
+  font-size: 11px;
+  color: var(--brand-dark-blue);
+  cursor: pointer;
+}
+
+/* 13. Modal Dialogs */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 2000;
+}
+
+.modal-container {
+  background-color: #ffffff;
+  border: 1px solid var(--border-box);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 440px;
+  overflow: hidden;
+}
+
+.modal-container.max-w-xl {
+  max-width: 580px;
+}
+
+.modal-header {
+  padding: 14px 18px;
+  background-color: var(--bg-sidebar);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title {
+  font-size: 18px;
+  color: var(--brand-blue);
+  font-weight: bold;
+}
+
+.modal-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #888888;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.modal-close-btn:hover {
+  color: #333333;
+}
+
+.modal-body-padded {
+  padding: 16px;
+}
+
+/* Auth Tabs & Forms */
+.auth-tabs {
+  display: flex;
+  border-bottom: 1px solid #e2edf3;
+  font-size: 12px;
+}
+
+.auth-tab-btn {
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-weight: bold;
+  color: #666666;
+  cursor: pointer;
+}
+
+.auth-tab-btn.active {
+  color: var(--brand-dark-blue);
+  border-bottom-color: var(--brand-blue);
+  background-color: #fbfdfe;
+}
+
+.auth-error-box {
+  margin: 12px 16px 0;
+  padding: 8px 12px;
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+  color: #c62828;
+  font-size: 11px;
+  border-radius: var(--radius-sm);
+}
+
+.auth-form {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-row {
+  display: flex;
+  gap: 8px;
+}
+
+.form-row .flex-1 {
+  flex: 1;
+}
+
+.form-label {
+  font-size: 11px;
+  font-weight: bold;
+  color: #444444;
+}
+
+.form-input {
+  padding: 6px 10px;
+  font-size: 12px;
+  font-family: inherit;
+  border: 1px solid var(--border-box);
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--brand-blue);
+}
+
+.avatar-choices-row {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.avatar-choice-btn {
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 1px;
+  background: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.avatar-choice-btn.selected {
+  border-color: var(--brand-blue);
+}
+
+.avatar-choice-img {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  display: block;
+}
+
+.quick-demo-accounts {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eef4f8;
+  text-align: center;
+}
+
+.quick-demo-title {
+  font-size: 11px;
+  color: #777777;
+  margin-bottom: 6px;
+}
+
+.quick-demo-chips {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn-chip {
+  background-color: #f0f8ff;
+  border: 1px solid var(--border-box);
+  color: var(--brand-dark-blue);
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.btn-chip:hover {
+  background-color: #e0f0fa;
+}
+
+/* Download Modal Cards */
+.download-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.download-card {
+  border: 1px solid var(--border-box);
+  border-radius: var(--radius-md);
+  background-color: #fbfdfe;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.download-filename {
+  font-size: 12px;
+  color: var(--brand-dark-blue);
+  display: block;
+}
+
+.download-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.download-all-banner {
+  background-color: #f0f8ff;
+  border: 1px solid #cbe1f0;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.download-all-title {
+  font-size: 12px;
+  color: var(--brand-dark-blue);
+  display: block;
+}
+
+.download-all-subtitle {
+  font-size: 11px;
+  color: #666666;
+  margin-top: 2px;
+}
+
+.netlify-instruction-box {
+  background-color: #f8fafc;
+  border: 1px solid #e2edf3;
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-size: 11px;
+  color: #444444;
+  line-height: 1.45;
+}
+
+.netlify-instruction-box h4 {
+  color: var(--brand-dark-blue);
+  margin-bottom: 6px;
+}
+
+.netlify-instruction-box ol {
+  padding-left: 18px;
+}
+
+.netlify-instruction-box li {
+  margin-bottom: 4px;
+}
+
+/* 14. Responsivitas Layar Mobile (<768px) */
+@media (max-width: 768px) {
+  body { padding: 0; }
+  .site-wrapper { border-radius: 0; border: none; }
+  .layout-body { flex-direction: column; }
+  .main-content { width: 100%; border-right: none; border-bottom: 1px solid var(--border-light); padding: 16px; }
+  .sidebar { width: 100%; padding: 16px; }
+  .main-nav { width: 100%; justify-content: space-between; overflow-x: auto; padding-top: 6px; }
+  .submit-hint { display: none; }
+  .download-cards-grid { grid-template-columns: 1fr; }
+  .download-all-banner { flex-direction: column; align-items: flex-start; }
+}

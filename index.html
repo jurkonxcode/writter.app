@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>writter.app — What are you doing?</title>
+  
+  <!-- Meta Deskripsi & SEO -->
+  <meta name="description" content="writter.app (2026) — Platform microblogging teks murni terringan bergaya Twitter klasik 2008. Tanpa algoritma bising, tanpa pelacak berat." />
+  <meta property="og:title" content="writter.app — What are you doing?" />
+  <meta property="og:description" content="Jejaring sosial berbasis teks murni tahun 2026 dengan kecepatan instan dan nuansa web klasik." />
+  
+  <!-- Menghubungkan File CSS Eksternal -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Notifikasi Kilat (Flash Notification) -->
+  <div id="flash-notice" class="flash-notice hidden" role="alert" aria-live="polite"></div>
+
+  <!-- Kontainer Utama (Kartu Tengah Web 2.0) -->
+  <div class="site-wrapper">
+    
+    <!-- 1. Header Situs & Menu Navigasi -->
+    <header class="site-header">
+      <div class="brand-area">
+        <a href="#" id="brand-logo" class="brand-logo" aria-label="Beranda writter.app">
+          writter<span class="brand-tld">.app</span>
+        </a>
+        <span class="tagline">what are you doing?</span>
+      </div>
+
+      <!-- Navigasi Dinamis (Berdasar status login pengguna) -->
+      <nav id="main-nav" class="main-nav" aria-label="Navigasi Utama">
+        <a href="#" id="nav-home" class="nav-link active">Home</a>
+        <span class="nav-separator" aria-hidden="true">|</span>
+        
+        <!-- Tautan ini hanya muncul saat sudah login -->
+        <span id="nav-user-section" class="nav-user-section hidden">
+          <a href="#" id="nav-profile" class="nav-link">Profile</a>
+          <span class="nav-separator" aria-hidden="true">|</span>
+          <a href="#" id="nav-favorites" class="nav-link">Favorites (<span id="nav-fav-count">0</span>)</a>
+          <span class="nav-separator" aria-hidden="true">|</span>
+        </span>
+
+        <a href="#" id="nav-people" class="nav-link">People</a>
+        <span class="nav-separator" aria-hidden="true">|</span>
+
+        <!-- Tombol Unduh Kode Sumber .TXT -->
+        <button type="button" id="btn-open-download" class="btn-download-tag" title="Unduh semua file proyek dalam format .txt">
+          📥 Unduh .TXT
+        </button>
+        <span class="nav-separator" aria-hidden="true">|</span>
+
+        <!-- Bagian Auth: Sign In / Sign Up atau Sign Out -->
+        <span id="auth-buttons-container">
+          <!-- Diisi otomatis oleh JavaScript -->
+        </span>
+      </nav>
+    </header>
+
+    <!-- Banner Sambutan untuk Pengunjung Publik yang Belum Login -->
+    <div id="guest-banner" class="guest-banner">
+      <div class="guest-banner-text">
+        <strong>Selamat datang di writter.app!</strong> Platform sosial teks murni tahun 2026 dengan bobot ultra-ringan (&lt;50KB), bebas iklan pelacak, dan bernuansa Twitter klasik 2008.
+      </div>
+      <div class="guest-banner-actions">
+        <button type="button" id="btn-banner-login" class="btn-secondary-sm">Masuk</button>
+        <button type="button" id="btn-banner-signup" class="btn-primary-sm">Daftar Sekarang</button>
+      </div>
+    </div>
+
+    <!-- 2. Tata Letak Dua Kolom (70% Kolom Kiri, 30% Sidebar Kanan) -->
+    <div class="layout-body">
+      
+      <!-- Kolom Kiri (70%): Form Status & Linimasa / Direktori -->
+      <main class="main-content">
+        
+        <!-- Tampilan Linimasa & Composer (Tab: Home, Profile, Favorites) -->
+        <div id="view-timeline" class="view-panel">
+          
+          <!-- Kotak Pembuat Status ("What are you doing?") -->
+          <section class="composer-card" aria-labelledby="composer-heading">
+            
+            <!-- State Saat Sudah Login -->
+            <div id="composer-auth-wrap" class="hidden">
+              <div class="composer-header">
+                <h2 id="composer-heading" class="composer-title">
+                  What are you doing, <span id="composer-username" class="text-brand">@user</span>?
+                </h2>
+                
+                <!-- Penghitung Karakter Klasik (Batas 140) -->
+                <div class="char-counter-wrap">
+                  <span id="char-counter" class="char-counter">140</span>
+                  <span class="counter-label">left</span>
+                </div>
+              </div>
+
+              <form id="tweet-form" class="composer-form">
+                <label for="tweet-input" class="sr-only">Tulis status Anda di sini</label>
+                <textarea
+                  id="tweet-input"
+                  class="tweet-textarea"
+                  rows="3"
+                  maxlength="160"
+                  placeholder=""
+                  required
+                ></textarea>
+
+                <div class="composer-controls">
+                  <!-- Deteksi & Pemilihan Perangkat Sumber -->
+                  <div class="device-select-wrap">
+                    <label for="device-select" class="device-label">device:</label>
+                    <select id="device-select" class="device-select">
+                      <option value="iPhone 16 Pro">iPhone 16 Pro</option>
+                      <option value="iPhone 15 Pro">iPhone 15 Pro</option>
+                      <option value="Google Pixel 8">Google Pixel 8</option>
+                      <option value="Galaxy S24 Ultra">Galaxy S24 Ultra</option>
+                      <option value="iPhone 13 mini">iPhone 13 mini</option>
+                      <option value="BlackBerry Bold">BlackBerry Bold</option>
+                      <option value="SMS">SMS (via 40404)</option>
+                      <option value="web">web</option>
+                    </select>
+                  </div>
+
+                  <div class="submit-wrap">
+                    <span class="submit-hint">(Press ⌘+Enter to update)</span>
+                    <button type="submit" id="btn-update" class="btn-update" disabled>
+                      Update
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <!-- State Saat Belum Login (Guest Prompt) -->
+            <div id="composer-guest-wrap" class="composer-guest">
+              <div>
+                <h3 class="composer-title">What are you doing?</h3>
+                <p class="guest-prompt-text">
+                  Daftarkan diri Anda di <strong>writter.app</strong> untuk memposting status 140 karakter, mengikuti teman, dan berdiskusi tanpa distraksi algoritma!
+                </p>
+              </div>
+              <div class="guest-prompt-buttons">
+                <button type="button" id="btn-prompt-login" class="btn-secondary-sm">Masuk</button>
+                <button type="button" id="btn-prompt-signup" class="btn-update">Daftar Akun Baru</button>
+              </div>
+            </div>
+
+          </section>
+
+          <!-- Banner Filter Tren Aktif -->
+          <div id="filter-banner" class="filter-banner hidden">
+            <span>Filtering by trend: <strong id="filter-keyword"></strong></span>
+            <button type="button" id="btn-clear-filter" class="btn-clear-filter">Clear filter</button>
+          </div>
+
+          <!-- Header Linimasa -->
+          <div class="timeline-header">
+            <h3 id="timeline-title" class="timeline-heading">Latest Updates</h3>
+            <span id="timeline-count" class="timeline-count">0 updates</span>
+          </div>
+
+          <!-- Aliran Status Linimasa -->
+          <section id="timeline-stream" class="timeline-stream" aria-label="Linimasa Status">
+            <!-- Diisi dinamis oleh script.js -->
+          </section>
+
+        </div>
+
+        <!-- Tampilan Direktori Komunitas (Tab: People) -->
+        <div id="view-people" class="view-panel hidden">
+          <div class="timeline-header">
+            <div>
+              <h2 class="timeline-heading">Community Directory</h2>
+              <p class="section-desc">Temukan dan ikuti pengguna lain di <strong>writter.app</strong>.</p>
+            </div>
+            <span id="people-count" class="timeline-count">0 members</span>
+          </div>
+
+          <div id="people-list" class="people-list">
+            <!-- Diisi dinamis oleh script.js -->
+          </div>
+        </div>
+
+      </main>
+
+      <!-- Kolom Kanan (30%): Sidebar Profil, Tren, & Hardware -->
+      <aside class="sidebar">
+        
+        <!-- Kartu Pengguna Login -->
+        <div id="sidebar-user-box" class="sidebar-box profile-box hidden">
+          <div class="profile-header">
+            <img id="sidebar-user-avatar" src="" alt="Avatar" class="profile-avatar" />
+            <div class="profile-info">
+              <h4 id="sidebar-user-name" class="profile-name">User</h4>
+              <p id="sidebar-user-handle" class="profile-handle">@user</p>
+            </div>
+          </div>
+
+          <p id="sidebar-user-bio" class="profile-bio"></p>
+
+          <!-- Statistik User: Tweets, Following, Followers -->
+          <div class="stats-grid">
+            <div class="stat-col">
+              <span id="stat-tweet-count" class="stat-number">0</span>
+              <span class="stat-label">Tweets</span>
+            </div>
+            <div class="stat-col">
+              <span id="stat-following-count" class="stat-number">0</span>
+              <span class="stat-label">Following</span>
+            </div>
+            <div class="stat-col">
+              <span id="stat-followers-count" class="stat-number">0</span>
+              <span class="stat-label">Followers</span>
+            </div>
+          </div>
+
+          <div class="favorites-shortcut">
+            <a href="#" id="link-fav-shortcut" class="fav-link">
+              <span class="star-icon">★</span> Favorites
+            </a>
+            <span id="stat-fav-count" class="fav-count">0</span>
+          </div>
+        </div>
+
+        <!-- Kartu Pengunjung Guest (Belum Login) -->
+        <div id="sidebar-guest-box" class="sidebar-box guest-box">
+          <h4 class="guest-box-title">Bergabung di writter.app</h4>
+          <p class="guest-box-desc">
+            Media sosial teks murni tercepat di tahun 2026. Sangat ringan, mudah digunakan, dan tidak menjual data pribadi Anda.
+          </p>
+          <div class="guest-box-actions">
+            <button type="button" id="btn-side-signup" class="btn-update full-width">Daftar Akun Baru</button>
+            <button type="button" id="btn-side-login" class="btn-secondary-sm full-width">Sudah Punya Akun? Masuk</button>
+          </div>
+        </div>
+
+        <!-- Kartu Deteksi Model Perangkat Hardware -->
+        <div class="sidebar-box hardware-box">
+          <span class="box-subtitle">Detected Hardware Source</span>
+          <p id="detected-hardware-text" class="detected-model">Mendeteksi model perangkat...</p>
+          <p class="detected-sub">Posting via: <strong id="current-device-display">web</strong></p>
+        </div>
+
+        <!-- Kartu Tren Populer -->
+        <div class="sidebar-box trends-box">
+          <h4 class="box-title">Trends</h4>
+          <ul id="trends-list" class="trends-list">
+            <li><a href="#" class="trend-item" data-trend="#sxsw">#sxsw</a></li>
+            <li><a href="#" class="trend-item" data-trend="#failwhale">#failwhale</a></li>
+            <li><a href="#" class="trend-item" data-trend="#followfriday">#followfriday</a></li>
+            <li><a href="#" class="trend-item" data-trend="writter2026">writter2026</a></li>
+            <li><a href="#" class="trend-item" data-trend="MacBook Pro">MacBook Pro</a></li>
+            <li><a href="#" class="trend-item" data-trend="iPhone 16 Pro">iPhone 16 Pro</a></li>
+            <li><a href="#" class="trend-item" data-trend="#minimalism">#minimalism</a></li>
+            <li><a href="#" class="trend-item" data-trend="Google Pixel">Google Pixel</a></li>
+          </ul>
+        </div>
+
+        <!-- Kartu Anggota Komunitas -->
+        <div class="sidebar-box community-box">
+          <div class="community-box-header">
+            <h4 class="box-title no-border">Community</h4>
+            <a href="#" id="link-view-all-people" class="view-all-link">View all</a>
+          </div>
+          <div id="community-avatars" class="avatars-grid">
+            <!-- Diisi dinamis -->
+          </div>
+        </div>
+
+        <!-- Tips SMS 40404 -->
+        <div class="sms-tip">
+          <p><strong>Tip:</strong> Kirim <strong>follow [username]</strong> ke nomor <strong>40404</strong> untuk menerima pembaruan via SMS teks.</p>
+        </div>
+
+      </aside>
+
+    </div>
+
+    <!-- 3. Footer Situs -->
+    <footer class="site-footer">
+      <p class="copyright">
+        &copy; 2026 <strong>writter.app</strong> &middot; <a href="#">About Us</a> &middot; <a href="#">Contact</a> &middot; <a href="#">Blog</a> &middot; <a href="#">Status</a> &middot; <a href="#">Terms</a> &middot; <a href="#">Privacy</a>
+      </p>
+      <button type="button" id="btn-reset-demo" class="btn-reset-demo">Reset Demo Data</button>
+    </footer>
+
+  </div>
+
+  <!-- ====================================================================
+       MODAL: AUTENTIKASI (DAFTAR & MASUK AKUN NYATA)
+       ==================================================================== -->
+  <div id="auth-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div>
+          <h3 id="auth-modal-title" class="modal-title">writter<span class="brand-tld">.app</span></h3>
+          <p id="auth-modal-subtitle" class="modal-subtitle">Masuk atau Daftar akun baru</p>
+        </div>
+        <button type="button" id="btn-close-auth-modal" class="modal-close-btn" aria-label="Tutup">✕</button>
+      </div>
+
+      <!-- Tab Masuk / Daftar -->
+      <div class="auth-tabs">
+        <button type="button" id="tab-btn-login" class="auth-tab-btn active">Masuk (Sign In)</button>
+        <button type="button" id="tab-btn-signup" class="auth-tab-btn">Daftar Akun Baru (Sign Up)</button>
+      </div>
+
+      <!-- Pesan Galat -->
+      <div id="auth-error-box" class="auth-error-box hidden"></div>
+
+      <!-- Formulir Masuk (Login) -->
+      <form id="form-login" class="auth-form">
+        <div class="form-group">
+          <label for="login-username" class="form-label">Username atau Email</label>
+          <input type="text" id="login-username" class="form-input" placeholder="alex atau alex@writter.app" required />
+        </div>
+        <div class="form-group">
+          <label for="login-password" class="form-label">Kata Sandi</label>
+          <input type="password" id="login-password" class="form-input" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn-update full-width py-2">Masuk ke writter.app</button>
+
+        <!-- Uji Coba Cepat dengan Akun Contoh -->
+        <div class="quick-demo-accounts">
+          <p class="quick-demo-title">Atau uji coba instan dengan akun contoh:</p>
+          <div class="quick-demo-chips">
+            <button type="button" class="btn-chip" data-quick-user="alex">@alex</button>
+            <button type="button" class="btn-chip" data-quick-user="maya">@maya</button>
+            <button type="button" class="btn-chip" data-quick-user="sam">@sam</button>
+            <button type="button" class="btn-chip" data-quick-user="leo">@leo</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Formulir Pendaftaran Akun Baru (Sign Up) -->
+      <form id="form-signup" class="auth-form hidden">
+        <div class="form-group">
+          <label for="signup-name" class="form-label">Nama Lengkap</label>
+          <input type="text" id="signup-name" class="form-input" placeholder="Contoh: Budi Santoso" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="signup-username" class="form-label">Username (@)</label>
+            <input type="text" id="signup-username" class="form-input" placeholder="budi_s" required />
+          </div>
+          <div class="form-group flex-1">
+            <label for="signup-email" class="form-label">Email</label>
+            <input type="email" id="signup-email" class="form-input" placeholder="budi@email.com" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="signup-password" class="form-label">Kata Sandi</label>
+          <input type="password" id="signup-password" class="form-input" placeholder="Minimal 4 karakter" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pilih Foto Profil (Avatar)</label>
+          <div id="avatar-choices" class="avatar-choices-row">
+            <!-- Pilihan avatar diisi oleh script.js -->
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="signup-bio" class="form-label">Bio Singkat (Opsional)</label>
+          <input type="text" id="signup-bio" class="form-input" placeholder="Suka kopi, desain, dan web teks murni..." />
+        </div>
+        <button type="submit" class="btn-update full-width py-2">Daftar & Masuk Sekarang</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: UNDUH BERKAS PROYEK (.TXT)
+       ==================================================================== -->
+  <div id="download-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="download-modal-title">
+    <div class="modal-container max-w-xl">
+      <div class="modal-header">
+        <div>
+          <h3 id="download-modal-title" class="modal-title">📥 Unduh Berkas writter.app (.TXT)</h3>
+          <p class="modal-subtitle">Unduh 3 berkas terpisah atau 1 berkas gabungan untuk Netlify / hosting mandiri.</p>
+        </div>
+        <button type="button" id="btn-close-download-modal" class="modal-close-btn" aria-label="Tutup">✕</button>
+      </div>
+
+      <div class="modal-body-padded">
+        <!-- Kartu 3 Berkas Terpisah -->
+        <div class="download-cards-grid">
+          <div class="download-card">
+            <div>
+              <strong class="download-filename">index.html.txt</strong>
+              <p class="download-desc">Struktur HTML5 semantik & form pendaftaran.</p>
+            </div>
+            <button type="button" id="btn-dl-html" class="btn-primary-sm">⬇ Unduh .TXT</button>
+          </div>
+
+          <div class="download-card">
+            <div>
+              <strong class="download-filename">style.css.txt</strong>
+              <p class="download-desc">Gaya CSS retro 2008 ultra-ringan & responsif.</p>
+            </div>
+            <button type="button" id="btn-dl-css" class="btn-primary-sm">⬇ Unduh .TXT</button>
+          </div>
+
+          <div class="download-card">
+            <div>
+              <strong class="download-filename">script.js.txt</strong>
+              <p class="download-desc">Logika interaktif, auth, posting, & follow.</p>
+            </div>
+            <button type="button" id="btn-dl-js" class="btn-primary-sm">⬇ Unduh .TXT</button>
+          </div>
+        </div>
+
+        <!-- Tombol Gabungan Semua File -->
+        <div class="download-all-banner">
+          <div>
+            <strong class="download-all-title">📦 Unduh Semua 3 File Sekaligus (1 Berkas .TXT)</strong>
+            <p class="download-all-subtitle">Berisi index.html, style.css, dan script.js lengkap dengan petunjuk pasang di Netlify.</p>
+          </div>
+          <button type="button" id="btn-dl-all" class="btn-update">⬇ Unduh semua_kode_writter.txt</button>
+        </div>
+
+        <div class="netlify-instruction-box">
+          <h4>💡 Cara Mengunggah ke Netlify:</h4>
+          <ol>
+            <li>Unduh ketiga berkas di atas lalu ganti ekstensinya menjadi <code>index.html</code>, <code>style.css</code>, dan <code>script.js</code>.</li>
+            <li>Kumpulkan ketiga berkas tersebut ke dalam satu folder di komputer Anda.</li>
+            <li>Buka <strong>netlify.com/drop</strong> lalu seret (drag-and-drop) folder tersebut.</li>
+            <li>Situs <strong>writter.app</strong> Anda akan langsung aktif secara publik dengan fitur registrasi dan login 100% berfungsi!</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menghubungkan File JavaScript Eksternal -->
+  <script src="script.js" defer></script>
+</body>
+</html>
